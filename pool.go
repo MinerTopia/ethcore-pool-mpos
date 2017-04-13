@@ -19,7 +19,8 @@ import (
 
 	"github.com/ethereum/ethash"
 	"github.com/ethereum/go-ethereum/common"
-
+	"github.com/ethereum/go-ethereum/common/math"
+	
 	"github.com/gorilla/mux"
 
 )
@@ -43,11 +44,14 @@ var okRequest = `{
   "result": true
 }`
 
-var pow256 = common.BigPow(2, 256)
+var Ether = math.BigPow(10, 18)
+var Shannon = math.BigPow(10, 9)
+
+var pow256 = math.BigPow(2, 256)
 
 var hasher = ethash.New()
 
-var poolPort = "5082"
+var poolPort = "4444"
 var ethereumPort = "8545" //8545 = geth, 8080 = eth (requires dev branch when using eth client)
 
 var logInfo *log.Logger
@@ -96,7 +100,7 @@ func main() {
 	// Set up logging
 	logInfo = log.New(os.Stderr, "INFO: ", log.Ldate|log.Ltime)
 	logError = log.New(os.Stderr, "ERROR: ", log.Ldate|log.Ltime)
-	logInfo.Println("Welcome to ethpool 2.0")
+	logInfo.Println("Welcome to MinerTopia")
 	logInfo.Println("Pool port is", poolPort)
 	logInfo.Println("Point your miners to: http://<ip>:" + poolPort + "/{miner}/{difficulty}")
 
@@ -126,7 +130,7 @@ func handleMiner(rw http.ResponseWriter, req *http.Request) {
 		// fmt.Fprint(rw, getErrorResponse("Invalid difficulty provided: "+vars["difficulty"]))
 		// return
 	}
-	minerAdjustedDifficulty := int64(minerDifficulty * 1000000 * 60)
+	minerAdjustedDifficulty := int64(minerDifficulty * 4000000 * 60)
 
 	miner := vars["miner"]
 	worker := "default"
